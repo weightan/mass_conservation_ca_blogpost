@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc 3.11" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>post</title>
+  <title>Making mass conserving Cellular Automata and their categorization.</title>
   <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -174,6 +174,10 @@
   </style>
 </head>
 <body>
+<header id="title-block-header">
+<h1 class="title">Making mass conserving Cellular Automata and their
+categorization.</h1>
+</header>
 <p><em>that falling sand gif</em></p>
 <p>Mass conservation here means that each state of a CA has associated
 mass number, non negative integer, such that all patterns conserve the
@@ -355,7 +359,7 @@ pattern behaviors. Or you can hard limit population of massless states,
 by e.g. allow them to exist only while they are in contact with massed
 states M, then their population P is bounded
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>P</mi><mo>≤</mo><mn>4</mn><mi>M</mi></mrow><annotation encoding="application/x-tex">0 \le P \le 4M</annotation></semantics></math>,
-at least after first generation, as you can initialize a grid with 0
+at least after the first generation, as you can initialize a grid with 0
 massed cells and 1000 massless non-vacumm cells, that will all die
 immediately.</p>
 <h3 id="how-does-the-mass-move">How does the mass move?</h3>
@@ -400,6 +404,8 @@ Then, long line of 1 mass slides left by 1 cell each generation – non
 local mass swap, effectively. But when it encounters a wall it “bunches
 up” to 2 mass cells and is fine.</p>
 <p><em>image should be here</em></p>
+<p>Plausibly you should count the substates, and streaming vs state map
+steps separately to remove that non local mass swap condition.</p>
 <h3 id="what-exactly-are-the-conservation-laws">What exactly are the
 conservation laws?</h3>
 <ul>
@@ -473,7 +479,7 @@ combined with 1d MC CA, with alternating 1d ca step and arrow change
 step? check this out)==</li>
 <li><strong>Streaming channel being under storage capacity.</strong> If
 cells have 4 neighbors, and at any generation can transfer 1 mass chunk
-to any neighbor, then you can avoid mass vanishing by setting the
+to any neighbor, then you can avoid mass vanishing by e.g. setting the
 storage capacity to 5 or more, 0-1 being normal operation, 2 - 5 are
 overload states that are not open to receive any more mass.<br />
 </li>
@@ -491,7 +497,7 @@ to advance to phase N it needs to be at N-1, then it’s possible to
 communicate the cell’s expected neighborhood to its neighbors. E.g.
 phases 0 -&gt; 1 -&gt; 2, they can jump backwards to arbitrary phases,
 but forwards only to the next one. Then cell that has all neighbors in 0
-phase can transition to “I currently have only 0-p or 1-p neighbors” –
+phase can transition to “I currently have only 0-ph or 1-ph neighbors” –
 this can be used to communicate how much takers it sees for example.
 (hard to constrain it so much as to get strict-MC as you can
 artificially make unreachable arrangements of cells, but definitely
@@ -610,7 +616,7 @@ with neighboring airlock of the same layer. But then collision step can
 happen across all layers, mapping full state of the cell to any other
 with that mass.</li>
 <li>Massless or massed states can be added to cells, without attributing
-them to airlocks. E.g. state 17 that has all airlocks empty but is of 3
+them to airlocks. E.g. a state that has all airlocks empty but is of 3
 mass.</li>
 <li>Each edge can be defined to have 2 airlocks, one pointed in and one
 out. Airlocks of cells connected (in to out) and (out to in), on each
@@ -623,9 +629,8 @@ state. If it’s in active phase, it can be streamed, if in passive
 forbidden from being streamed. For c/2 you just alternate them. For c/3
 it’s active for one turn and then passive for 2 turns, etc.</li>
 <li>Can be extended to Moore, if you add another 4 airlocks pointing to
-diagonal neighbors.</li>
-<li>Can be extended to n-d, trivially, if you add airlock per each face
-of the (hyper)cube.</li>
+diagonal neighbors. Can be extended to n-d, trivially, if you add
+airlock per each face of the (hyper)cube.</li>
 </ul>
 <h3 id="ca2-generalized-pca">CA#2 “generalized PCA”</h3>
 <p><em>gif example should be here</em></p>
