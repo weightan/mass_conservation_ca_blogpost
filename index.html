@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.11" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>post</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+<p><em>that falling sand gif</em></p>
+<p>Mass conservation here means that each state of a CA has associated
+mass number, non negative integer, such that all patterns conserve the
+sum of those numbers under application of generations. And vacuum is
+assumed to have 0 mass.</p>
+<p>Population conserving / Number conserving CAs are the terms used in
+literature often, mostly about 2 state such CAs.</p>
+<p>Many terms used here can be found on wiki or <a
+href="https://conwaylife.com/">https://conwaylife.com/</a></p>
+<h1 id="overview-of-the-well-known-models">Overview of the well known
+models</h1>
+<ul>
+<li><p><strong>Lattice Gas Cellular Automata</strong> (LGCA) e.g. HPP /
+FHP, gas simulation CAs, reversible quasi-isotropic, HPP can be realized
+as 2^4 state vN CA. https://en.wikipedia.org/wiki/HPP_model</p></li>
+<li><p><strong>Falling sand simulation “CAs”</strong>, usually not CAs
+per se as they lack simultaneous update.
+https://www.youtube.com/watch?v=VLZjd_Y1gJ8
+https://www.youtube.com/watch?v=L4u7Zy_b868</p></li>
+<li><p><strong>Margolus neighborhood CAs</strong>, can be reversible,
+but necessarily quasi-isotropic or anisotropic, realized as 2^4 state
+Moore CA. https://en.wikipedia.org/wiki/Block_cellular_automaton
+https://people.csail.mit.edu/nhm/cam-book.pdf</p></li>
+<li><p><strong>Kenichi Morita’s partitioned CAs</strong>, some are
+reversible, all quasi-isotropic or anisotropic. Close to Margolus, but
+with native vN neighborhood, 2^4 states.
+https://link.springer.com/article/10.1007/s10710-025-09521-w</p></li>
+<li><p><strong>Abelian sandpile model</strong>, isotropic, but no
+oscillators / ships are possible as it invariably diffuses and settles.
+The interest comes primarily from looking at ever higher state numbers.
+https://en.wikipedia.org/wiki/Abelian_sandpile_model</p></li>
+<li><p><strong>Biham–Middleton–Levine traffic model</strong>,
+anisotropic, can be realized naively by 6 state vN CA.
+https://en.wikipedia.org/wiki/Biham–Middleton–Levine_traffic_model</p></li>
+<li><p><strong>Nagel–Schreckenberg model</strong> similar to previous,
+but 1d, with larger neighborhood and randomization.
+https://en.wikipedia.org/wiki/Nagel%E2%80%93Schreckenberg_model</p></li>
+<li><p><strong>Biological lattice-gas cellular automaton</strong>
+(BIO-LGCA), variations of FHP, mixed with random transitions usually.
+https://en.wikipedia.org/wiki/BIO-LGCA</p></li>
+<li><p><strong>Q2R Ising CA</strong> 2 state CA with “energy” associated
+with patterns rather than singular cell states. Each cell is either - or
++, and it flips each generation if it has the same number of vN
+neighbors with + and with -, otherwise stays the same. Updates alternate
+like checkerboard, black-white-black-…. Energy is computed by counting
+adjacent ++ / – pairs as +1 and -+ pairs as -1 and summing them, and it
+is conserved. Arbitrary structures can be made out of cells gained by
+ripping 0 into +1-1 and separating them, so it’s not mass conserving in
+spirit. Also translation invariance is somewhat broken.
+https://scispace.com/pdf/periods-and-clusters-in-ising-cellular-automata-48gwor011h.pdf</p></li>
+</ul>
+<p><strong>General sources:</strong></p>
+<ul>
+<li><p><strong>1d 2 state Number conserving CAs</strong>, E.g.
+<strong>Rule 184</strong> a lot of literature on them, mostly boring in
+ways it approaches exploring them. https://arxiv.org/pdf/2308.00060
+https://en.wikipedia.org/wiki/Rule_184</p></li>
+<li><p><strong>n-d 2 state Number conserving CAs</strong>, a lot of
+literature on them in academia, but they go about it in a boring
+way.</p></li>
+</ul>
+<p>Conservation Laws in Cellular Automata by Siamak Taati (20??)
+https://siamak.isoperimetric.info/articles/handbook09.pdf</p>
+<h1 id="general-qualities-as-applied-to-mc-cas">General qualities as
+applied to MC CAs</h1>
+<p><strong>Isotropy</strong> means the rule is exactly D4-symmetric if
+it’s on the square lattice, given transition function F and some
+combination of rotations and reflection R, then R F R^-1 = F. For
+example CGOL is fully isotropic. MAP rules are general form, containing
+many <strong>anisotropic</strong> rules, for example a rule where
+everything moves to the left each generation. Other lattices or higher
+dimensions have different symmetry groups, isotropy there means rule is
+invariant under that.</p>
+<p>Partial case here is <strong>quasi-isotropy</strong>, when it’s the
+case that S R F R^-1 S^-1 = F, S being permutation of states
+corresponding to this R, such as for example permutation changing the
+arrow direction of the state. HPP, Margolus, Morita’s PCAs are examples
+or at least contain some such rules.</p>
+<p>This is a genuine relaxation, if you allow altering the states of the
+CA in symmetry, it gives so much additional different symmetries, like
+Day and Night rule where S F S ^-1 = F, S is a state flip. There are
+also rules that commute F G = G F, and are reversible, so one rule is a
+“symmetry” for another and vice versa.</p>
+<p>Other assumed properties here are:</p>
+<p><strong>Simultaneous update, deterministic, finite neighborhood,
+discrete state of cells, finite number of states of cells, square
+lattice, translation invariance.</strong></p>
+<p>In this writeup, it is assumed that if the update function has two
+stages / parts, they should be considered as joined into one, in the
+end. So there should be <strong>no partial updates</strong>, no 3.5
+generations. Staged updates are just an abstraction. E.g. Margolus
+neighborhood CAs are ultimately 16 state Moore CAs.</p>
+<p>Also <strong>cell-centered square lattice</strong>, so that the
+squares have the states, not e.g. edges on it, like in the most basic
+HPP formulation.</p>
+<p>Mass conserving CA can be <strong>reversible</strong>, but there is
+no strong coupling of those properties. In many rule spaces, reversible
+by construction CAs are very explosive. And mass conserving are losing
+information very quickly, for example CA where all vertical 10 dominoes
+swap, with state 2 being stable “wall” – if you imagine making random
+filled square over horizontal wall, then mass falls down like sand and
+piles up, losing spacing information in columns. This is common.</p>
+<p><strong>Speed of light</strong> = c. Should be noted that orthogonal
+speed of light in Moore and diagonal speed are not the same per se. When
+doing an orthogonal jump you can do another orthogonal jump
+perpendicular to the first. That gives rise to ships going at c where
+slices perpendicular to the direction of motion can conduct signals up
+and down.</p>
+<p>Both diagonal Moore c-ships and all vN c-ships cannot, for any
+diagonals. But they are not completely static in the sense they can be
+of arbitrarily high period, e.g. by implementing something like ripple
+counters with leading cells providing the clock signal. (pointed out by
+Magma)</p>
+<p>It’s hard to define what is that is conserved when you deal with
+infinite patterns, so here is mostly used the definition that applies
+only to <strong>finite patterns</strong> on vacuum background, or
+toruses, or finite regions with immutable wall circling them.</p>
+<p>As an example of infinite pattern weirdness, imagine a beam of 1 mass
+cells, that has a start but extends to infinity. If the starting cell
+dies, did the mass change?</p>
+<p>Let’s say you prohibit the case above by saying it’s mass conserving
+only if sum of decrease in mass of all cells is equal to the sum of
+increase, each generation. But then what happens if both sums are
+infinite?</p>
+<p>Promising way to handle this is to require the existence of a
+bijection that connects all disappearing mass units and all appearing
+mass units one to one, with constraint that the distance of all such
+connections is bounded, on all patterns. – prohibits infinite beam with
+dying starting cell, allows infinite horizontal beam to move one cell
+up, prohibits beam’s cells with indexes 2^n dying and all cells 1 step
+below the beam becoming alive.</p>
+<p>GPT5.5: We say that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+is mass-conserving if there exists a constant
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>&lt;</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">B &lt; \infty</annotation></semantics></math>
+such that, for every configuration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>,
+there is a bijection
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mi>Q</mi></msub><mo>:</mo><msub><mi>D</mi><mi>Q</mi></msub><mo>→</mo><msub><mi>A</mi><mi>Q</mi></msub></mrow><annotation encoding="application/x-tex">\phi_Q : D_Q \to A_Q</annotation></semantics></math>
+from disappearing mass units to appearing mass units satisfying
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>n</mi><mi>c</mi><mi>e</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>ϕ</mi><mi>Q</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mo>≤</mo><mi>B</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> for all </mtext><mspace width="0.333em"></mspace></mrow><mi>x</mi><mo>∈</mo><msub><mi>D</mi><mi>Q</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">distance\bigl(x,\phi_Q(x)\bigr) \le B \text{ for all } x \in D_Q.</annotation></semantics></math></p>
+<p>Unclear if this is a good definition for CAs on infinite patterns.
+Also even HPP fails this criterion above, as you can make infinite beam
+with first cell emptying out in it, so maybe it’s not very well
+applicable criterion. But dealing with this stuff in general is not in
+the scope here, finite patterns are the focus.</p>
+<h1
+id="properties-of-mc-ca-rules-decided-by-design-rather-than-emergent">Properties
+of MC CA rules, decided by design rather than emergent</h1>
+<p>SWAP01 = vN rule with 2 states, for all horizontal 01 dominoes, swap
+them. Can be realized into actual transition table, but this is a better
+way to state it.</p>
+<h3 id="what-is-the-state-of-the-cell">What is the state of the
+cell?</h3>
+<ul>
+<li>Transitions depend only on the mass number of the central cell, and
+mass numbers of its neighbors.</li>
+<li>Non zero mass cells can hold additional state info e.g. mass 2 type
+1 and mass 2 type 2 cells.</li>
+<li>Also zero mass cells can hold state, e.g. mass 0 type 1 and mass 0
+type 2 cells</li>
+<li>If massless non vacuum cell states are there. Can there be finite
+cell configurations that increase amount of massless states as a
+proportion to massed states arbitrarily high as generations are applied
+to it? Yes e.g. non interacting second layer of CGOL defined to be
+massless / No e.g. vacuum transitions to 0 mass state if nearby of 1
+mass state, but otherwise does nothing and goes back to normal vacuum if
+that condition stops.</li>
+</ul>
+<p>Many quasi-isotropic CAs have state of the cell that holds state
+beyond the mass number of the cell, for example HPP, 2-mass cell can be
+the one with arrows at 180 or 90 degrees.</p>
+<p>Adding stateful vacuum is slightly weird move in this context, as it
+can become the case that all the interesting behaviors happen there, so
+you essentially made non-MC CA.</p>
+<p>But it can be interesting nonetheless, if you use massed cells to
+catalyze some reactions or add some other special effects on massless
+pattern behaviors. Or you can hard limit population of massless states,
+by e.g. allow them to exist only while they are in contact with massed
+states M, then their population P is bounded
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>P</mi><mo>≤</mo><mn>4</mn><mi>M</mi></mrow><annotation encoding="application/x-tex">0 \le P \le 4M</annotation></semantics></math>,
+at least after first generation, as you can initialize a grid with 0
+massed cells and 1000 massless non-vacumm cells, that will all die
+immediately.</p>
+<h3 id="how-does-the-mass-move">How does the mass move?</h3>
+<ul>
+<li>Does the mass move at all? Yes e.g. SWAP01 / No e.g. CGOL confined
+to 1 mass cells.</li>
+<li>Are there patterns where cell loses some mass and other cell gains
+some mass on arbitrary distance from each other, and no other change in
+mass of any states of cells happen? Yes e.g. copy left cell’s state / No
+e.g. SWAP01.</li>
+<li>Are there ships and/or oscillators that change the mass numbers of
+their cells? Yes e.g. SWAP01 / No e.g. Abelian sand pile.</li>
+<li>Can you modify the rule by adding another, completely inert cell
+type (‘wall’) without modifying behavior of patterns on toruses without
+this state? Or, inside in bulk of large nxn border made of wall, it
+should behave the same. All transitions that do not contain wall should
+be unchanged, and only transitions with wall added, while preserving
+mass conservation. Yes e.g. HPP / No e.g. copy left cell’s state.
+<ul>
+<li>Partial: you can place walls only e.g. above and below finite
+configuration, but not from left and right.</li>
+</ul></li>
+</ul>
+<p>I think one of the critical qualities of mass conserving CAs is
+whether cells coordinate locally or globally. Both the property of being
+wallable and locality of mass change are trying to point at that, but
+there are differences. I guess.</p>
+<p>Prototypical non-local coordination CA is the “copy left cell’s
+state” – they are non wallable, as stream of mass would get crashing
+against the wall and tail would not know there is no room and keep
+coming in. Coincidentally, this one would not be counted as mass
+conserving at all, given that definition above for infinite patterns
+with bijection.</p>
+<p><em>image should be here</em></p>
+<p>The question the cell should ask, “would me switching from state C
+-&gt; C’ change the global mass number?” and if it should rely on some
+behavior of other cells far away to get assurance that it will preserve
+the global mass number, I’d say it’s non local coordination.</p>
+<p>There are exceptions, wallable CAs that can have non-local mass swap.
+For example 3 state 1d CA, where 1 mass gets transferred at a time.
+Then, long line of 1 mass slides left by 1 cell each generation – non
+local mass swap, effectively. But when it encounters a wall it “bunches
+up” to 2 mass cells and is fine.</p>
+<p><em>image should be here</em></p>
+<h3 id="what-exactly-are-the-conservation-laws">What exactly are the
+conservation laws?</h3>
+<ul>
+<li>Are there additional spatial mass conservation laws? No e.g. HPP
+(there are additional <em>momentum</em> conservation laws) / Yes.
+e.g. SWAP01, mass is also conserved by rows.</li>
+<li>Is there a period before mass stabilizes, or otherwise the mass is
+stable in all configs from first gen? No e.g. SWAP01 / Yes. e.g. SWAP01
+but with additional state 3 that transitions to 0 regardless of
+neighborhood, but all cells nearby 3 become 1. – here some configs
+increase in mass from 0 gen to 1 gen, but then are necessarily
+stable.</li>
+<li>Is mass property of states, or of patterns? States: SWAP01, HPP.
+Patterns: e.g. A cell is considered to have one mass chunk if it has at
+least one neighbor of B state.</li>
+</ul>
+<p>Global mass conservation admits a lot of different ways to strengthen
+that condition, for example mass is also conserved by rows, or by
+diagonals or there are two kinds of mass and both are conserved
+separately. But I think, there should be a focus on at least having MC
+and only then looking at the particular type of it.</p>
+<p>There can also be many relaxations, for example “mass can only be
+lost, but does so rarely”, this also leads to interesting kind of rule.
+Another is “mass is invariant on all transitions after the first”, this
+includes pretty trivial rules, where all cells die immediately and then
+mass = 0 and it stays, but also interesting ones with ships and
+oscillators.</p>
+<p>Even looser example would be: SWAP01 but with additional state 3 that
+transitions to 0 if it has less than 4 of 3-state neighbors, otherwise
+stays. All non-3 cells nearby 3-state become 1. Else apply normal SWAP01
+transitions. – no way to produce more of 3-state cells, and they decay
+with time. So, eventually mass stabilizes on all finite patterns, but
+there are finite patterns with arbitrarily large but finite mass
+increase.</p>
+<p>This period before stabilization also makes it non trivial to search
+for “effectively” mass conserving rules, as they would fail naïve mass
+conservation checks on all small arrangements of cells.</p>
+<p>Or, mass can be defined to belong to cells only in certain
+configurations, such as looking only at the cell’s state does not tell
+you for sure what amount of mass belongs to it.</p>
+<h3
+id="conflict-resolution-methods-to-avoid-mass-duplication-or-vanishing.">Conflict
+resolution, methods to avoid mass duplication or vanishing.</h3>
+<ul>
+<li><strong>Cell is split into substates</strong> that propose
+interaction with substate of the neighbors, importantly based only on
+the state of the cell, not its neighborhood. That makes it clear to
+other cells nearby that can observe that cell but not its whole
+neighborhood, what interactions are offered. Otherwise there would be
+uncertainty.</li>
+<li><strong>Cell gives off enough mass to cover all potential
+takers.</strong> Suppose it’s T - G - T, Takers on each side do not see
+each other, from their perspective it’s T - G - ?; If G offers 1 mass
+chunk, and T takes it, then it might be duplicated if there is another
+taker on the other side which takes it too. So, G needs to offer enough
+mass in a single go to assure any taker that there is enough for
+possible unseen takers, and mass wouldn’t be duplicated. Multiples of 4
+in vN, multiples of 8 in Moore. (or less with complications, in Moore,
+as T placed orthogonally from G sees 4 out of 8 neighbors of G, and by
+allowing it only transfer orthogonally, G should give off &gt;= 2
+chunks)<br />
+</li>
+<li><strong>Single incoming source and single outgoing
+direction.</strong> If cells are unambiguous about from what neighbor it
+takes and what neighbor gets an offer, then it’s easy to avoid
+conflicts. But then vacuum becomes anisotropic, or you’d need to have
+enough states to cover 4 incoming streams for vacuum cell in vN. Also it
+forces the state number too high, in vN it gets multiplied by 12, the
+number of arrows with source and destination. ==(NOTE can be maybe
+combined with 1d MC CA, with alternating 1d ca step and arrow change
+step? check this out)==</li>
+<li><strong>Streaming channel being under storage capacity.</strong> If
+cells have 4 neighbors, and at any generation can transfer 1 mass chunk
+to any neighbor, then you can avoid mass vanishing by setting the
+storage capacity to 5 or more, 0-1 being normal operation, 2 - 5 are
+overload states that are not open to receive any more mass.<br />
+</li>
+<li><strong>Non intersecting templates.</strong> Generalization of “swap
+all 01 horizontal dominoes”. Template is a small region of the grid, its
+core is a subset of cells that will be altered if template matches that
+area, the witnesses are the cells that are not altered but are part of
+the template. Rule is made out of set of templates such that if any two
+templates overlaid with their cores intersecting, they differ in at
+least one place. So that at any given cell on the whole grid, only one
+template could possibly act on it. (should be cautious about final
+neighborhood size)</li>
+<li><strong>Phase coordination.</strong> If cells have “phase” such that
+to advance to phase N it needs to be at N-1, then it’s possible to
+communicate the cell’s expected neighborhood to its neighbors. E.g.
+phases 0 -&gt; 1 -&gt; 2, they can jump backwards to arbitrary phases,
+but forwards only to the next one. Then cell that has all neighbors in 0
+phase can transition to “I currently have only 0-p or 1-p neighbors” –
+this can be used to communicate how much takers it sees for example.
+(hard to constrain it so much as to get strict-MC as you can
+artificially make unreachable arrangements of cells, but definitely
+possible to get MC after first generation.)</li>
+<li><strong>Just make neighborhood larger.</strong> If you use e.g. vN
+neighborhood of size 2, and mass transfers at half c, on one orthogonal
+step, then cells see the whole “neighborhoods” of cells they interact
+with. Expands map size and constrains the speed of mass transfer. Can be
+made isotropic.</li>
+</ul>
+<p>The most difficult to conceptualize aspect of MC CAs is coordination
+of cells, for the purpose of preserving the mass. When one cell loses
+mass, it should be confident there is another cell to catch it. It
+should be confident there is no 2 cells ready to catch that mass. When
+cell gains mass, it should be confident that the cell that gave it, gave
+it only to this cell. Etc</p>
+<p>As neighborhood is finite, a cell sees only part of the neighborhood
+the other cell sees. In vN the mutually observed area is just these two
+exact cells. In Moore it’s 3x2 rectangle, with those cells in the
+central column if they are orthogonally positioned and 2x2 square if
+diagonally.</p>
+<p>That makes it challenging to orchestrate the exchange.</p>
+<h1 id="partitioned-state-mc-cas">Partitioned state MC CAs</h1>
+<h3 id="basic-concept-explanation">Basic concept explanation</h3>
+<p>Both Margolus and Morita CA are of this type. Also HPP realization
+into vN CA.</p>
+<p>The basic idea is like that, what if you avoid conflicts and mass
+duplication altogether by splitting each state into several substates,
+then grouping several of such substates of nearby cells into enclosure
+and then permuting the tokens in those little enclosures? Would give
+mass conservation for free. Also reversibility if the whole map
+old_enclosure -&gt; new_enclosure is a permutation.</p>
+<p><strong>Margolus</strong> gives each cell 4 substates. Update goes in
+two steps, make 4 enclosures over vertices of the square 4 substates in
+each. Update them. Then make enclosure out of all 4 substates in the
+central cell. Update it. Basically streaming and collision steps.</p>
+<p><strong>Morita</strong> does basically the same thing but with vN.
+Update goes in two steps, make 4 enclosures with 2 substates this time.
+Update them, by swapping them unconditionally. Then make enclosure out
+of all 4 substates in the central cell. Update it. Basically the same
+streaming and collision steps, but orthogonal this time.</p>
+<p><em>image should be here</em></p>
+<p>Also that makes those rules at least quasi-isotropic or
+anisotropic.</p>
+<p>I’m not explaining this like those people would, if you want their
+explanation go read their papers.</p>
+<h3 id="design-details-and-options">Design details and options</h3>
+<ul>
+<li>All particles are the same mass, 1 / Not, e.g. 1,2.</li>
+<li>All particles are the same type / Not, e.g. mass 1 type 1 and mass 1
+type 2 particles.</li>
+<li>All slots can hold the same amount of mass / types, or Not.</li>
+<li>Over streaming step, the substates just swap unconditionally /
+something other.</li>
+<li>All substates are interacting with the fixed substate(s) of
+neighbor’s cell / Not, where with which ones depends on the cell
+state.</li>
+<li>Are the particles unambiguously traceable? Not e.g. HPP on
+collisions / Yes e.g. SWAP01.</li>
+</ul>
+<p>The core thing here is that all cells should agree on what exact
+enclosures they are part of, AND see those enclosures fully. So, it’s at
+most 2x2 squares in Moore and just 2 cell dominoes in vN.</p>
+<p>You can do so much variations of this basic idea.</p>
+<p>Both Margolus and Morita have static split, all cells do the same
+enclosure formation regardless of cells in their neighborhood. Both have
+2 states of substate and 1 state of the particle. Both have enclosures
+changing based only on that enclosure itself, but nothing stops it from
+looking at the cells around it.</p>
+<p>Really tricky part here is to avoid accidentally giving it larger
+neighborhood than you expected. Suppose cell has substate A interacting
+with one of above cell, and in next stage with substate of below cell.
+When you fold this into one update, cell below had interaction with a
+cell 2 hops above! That’s not good.</p>
+<p>But the final full cell state -&gt; new cell state map is always safe
+and free, as it does not include interaction with neighbors. You can add
+unlimited number of them, but they compose and you have equivalent of
+only one such map.</p>
+<h1 id="some-examples-of-mc-cas-i-made.">Some examples of MC CAs I
+made.</h1>
+<h3 id="ca1-bootleg-hpp">CA#1 “bootleg HPP”</h3>
+<p><em>gif example should be here</em></p>
+<blockquote>
+<p>The idea was, for each cell to have 4 “airlocks”, one on each edge.
+Airlock can have a mover facing in, out, or no mover. (IN / OUT / NONE)
+So, there are 3^4 = 81 cell states.</p>
+<p>The update goes in 2 stages: - Stream: On each edge between two
+cells, if there is one empty airlock and one with mover facing out, they
+get swapped and the mover changes state to IN. - Collide: Each cell
+transition to any of the other cells with the same amount of mass. As
+there are 81 states, it gives you a map, a vector of length 81 with
+elements 0..80</p>
+</blockquote>
+<p>Those are very nice. Wallable, if you add another state that does no
+airlock swap. No stateful vacuum. Trivial to make quasi-isotropic. This
+specific version is all non-reversible, as streaming is non injective,
+but this can be modified.</p>
+<p><em>link to JS page sim should be here</em></p>
+<p>Can be modified or simplified:</p>
+<ul>
+<li>Remove in/out mover distinction, gives 2^4 = 16 states per cell.
+Equivalent to Morita’s PCAs. (Trivial to make reversible, by making
+state map into a permutation.)</li>
+<li>Simplify streaming, for example just swap airlock contents
+unconditionally.</li>
+<li>Each cell can consider its full pre-stream neighborhood in its
+collision step. That does not expand neighborhood.</li>
+<li>Each edge swap can be more elaborate, only constraint is that
+mass(A, B) = mass(A’, B’). E.g. (OUT, OUT) -&gt; (IN, IN).</li>
+<li>Each edge swap can also take into account full state (pre stream) of
+those 2 cells between which it happens.</li>
+<li>More states of the movers, e.g. (RED / BLUE) x (IN / OUT) or movers
+of mass 1 and mass 2.</li>
+<li>There can be also multiple layers of airlocks, airlock get swapped
+with neighboring airlock of the same layer. But then collision step can
+happen across all layers, mapping full state of the cell to any other
+with that mass.</li>
+<li>Massless or massed states can be added to cells, without attributing
+them to airlocks. E.g. state 17 that has all airlocks empty but is of 3
+mass.</li>
+<li>Each edge can be defined to have 2 airlocks, one pointed in and one
+out. Airlocks of cells connected (in to out) and (out to in), on each
+edge. Streaming step is defined to move movers from out airlocks to in
+airlocks, if they are empty, otherwise do nothing. (Can’t be made
+reversible by construction, but not completely forbidden from being
+emergently reversible.)</li>
+<li>Each mover can be made to have “speed” by adding phase x speed
+state. If it’s in active phase, it can be streamed, if in passive
+forbidden from being streamed. For c/2 you just alternate them. For c/3
+it’s active for one turn and then passive for 2 turns, etc.</li>
+<li>Can be extended to Moore, if you add another 4 airlocks pointing to
+diagonal neighbors.</li>
+<li>Can be extended to n-d, trivially, if you add airlock per each face
+of the (hyper)cube.</li>
+</ul>
+<h3 id="ca2-generalized-pca">CA#2 “generalized PCA”</h3>
+<p><em>gif example should be here</em></p>
+<blockquote>
+<p>Each cell has slot A and slot B, each can hold 0 or 1 mass. So, total
+4 states of the cell. Update goes in 3 stages:</p>
+<ul>
+<li>State determines to what of 4 neighbors slot A points, to what B
+points, it can be the same neighbor.</li>
+<li>If two cells have slot A pointing at each others, their A slot
+contents swap. Same with B.</li>
+<li>Transition each cell state to some other state with the same mass
+according to state map.</li>
+</ul>
+<p>This is just an abstraction, it can be expressed as a normal vN
+neighborhood simultaneous update rule, one stage.</p>
+</blockquote>
+<p><em>link to JS page sim should be here</em></p>
+<p>You can similarly construct PCA with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mi>K</mi></msup><annotation encoding="application/x-tex">2^K</annotation></semantics></math>
+states,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+is a number of slots/substates of 2 states. Or
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><msub><mi>k</mi><mn>1</mn></msub></msup><mo>*</mo><msup><mn>3</mn><msub><mi>k</mi><mn>2</mn></msub></msup><mo>*</mo><msup><mn>4</mn><msub><mi>k</mi><mn>3</mn></msub></msup><mo>*</mo><mi>.</mi><mi>.</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">2^{k_1} * 3^{k_2} * 4^{k_3} * ...</annotation></semantics></math>
+states, if you allow
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mn>1</mn></msub><annotation encoding="application/x-tex">k_1</annotation></semantics></math>
+of slots with 2 states,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mn>2</mn></msub><annotation encoding="application/x-tex">k_2</annotation></semantics></math>
+of slots with 3 states, etc.</p>
+<p>So, it’s a general way to make non-trivial MC and/or reversible CA of
+N states.</p>
+<p>Superset of both Margolus and Morita’s CAs. Superset of previous
+model, so all ways to modify it apply here too.</p>
+<p>Nice property of this family of rules is that it scales all the way
+down, to 2 state rule. 1 slot with mover of 1 state, this gives normal
+traffic rules.</p>
+<p>Can be modified or simplified:</p>
+<ul>
+<li>The movers can have more state or mass. 3 state MC CAs can be
+made.</li>
+<li>Slots can point at any other slots, and swap happens if they point
+at each other.</li>
+<li>When interaction of two slots happen, they can take into account
+full (pre-stream) states of their whole cells.</li>
+<li>Final state map can take into account full (pre-stream) neighborhood
+of that cell.</li>
+<li>Some states have more or less slots (e.g. state-1 has 4-2 slots,
+state-2 has 6 slot)</li>
+<li>Trivial to extend to Moore or higher dimensions.</li>
+<li>Non trivial to make reversible in general case. You can undo final
+state map. But then you can’t easily undo slot swap, as you don’t know
+to what neighbors they pointed before swap. But it’s easy to do if all
+of them point to the same ones like in the case with Margolus and
+Morita. Or if all single cell states have predecessors-by-streaming with
+only one type of slot pointer config. (pointed out by gpt-5.6-sol)</li>
+</ul>
+<h3 id="ca3-template-ca">CA#3 “template CA”</h3>
+<p><em>gif example should be here</em></p>
+<p>Motivation for this was to generalize “swap all 01 horizontal
+dominoes”. Loosely inspired by this paper
+https://arxiv.org/pdf/2512.08727 by Barbara Wolnik and others.</p>
+<p>In Moore 2 cells that can see each other, can see also either 3x2
+rectangle if they are placed orthogonally, or 2x2 square if diagonally.
+If those cells are of state-1 and state-0 they can decide to swap, based
+on this mutually seen neighborhood, as they are sure the other cell does
+complementary move.</p>
+<p>Why only two cells? If you have some region, e.g. 3x3 with fixed cell
+values, 2 state, and define some population conserving transformation of
+cells within, then it could have been expressed with pairwise cell
+swaps. This frame restricts only the distance of the swap, to one Moore
+step. E.g. to express all 3x3 transformations you’d need range 2 Moore.
+Unclear how much is lost due to this, what other weird methods are there
+to achieve that without explicitly defining the swaps.</p>
+<p>For range 1 Moore, this results in 4 templates, vertical and
+horizonal 3x2 rectangles with core in the center, and two 2x2 squares
+with different diagonals being the core. The rule is made from a set of
+such templates, where core sums to 1, as 1-1 swap or 0-0 swap does
+nothing.</p>
+<p>Core marked C_x and mutually seen cells as T_x <em>image should be
+here</em></p>
+<p>This set of templates should be such as each cell on the whole grid
+has no ambiguity about which template’s core it is a part of. This is
+achieved by requiring that any two templates if overlaid with their
+cores intersecting, differ in at least one place. Overlap is made only
+by translating the templates, not rotation or reflection. To add
+rotations or reflections you need to add all the rotated/reflected
+versions of a template explicitly.</p>
+<p>Why not allow templates where either they don’t overlap or overlap
+but prescribe the same action on the cell in consideration? Consider
+{01, 10} – those either differ or prescribe the same action on all
+overlaps. 01010 -&gt; 10101 mass violation. They move two different mass
+units into central zero, but it only gets 1. And zeros on far sides get
+the same mass chunks moved in that moved in central one. Mass vanishing
+and duplication.</p>
+<p>And it turns out you can enumerate the whole rule space pretty
+easily, the rules assembled from those 4 templates, takes like 20
+minutes in unoptimized python. This construction method is very
+convenient, you can make that set of templates iteratively, by adding
+new templates that are compatible with all others and abort early if it
+fails to extend further.</p>
+<p><em>link should be here, lift final number of CAs to here</em></p>
+<p>Here is a page that runs random rule from subsample of size 5000,
+with some notable rules highlighted.</p>
+<p><em>link to JS page sim should be here</em></p>
+<p>I’m 80% sure this is full list of wallable 2d 2-state Moore MC
+CAs.</p>
+<p>Non wallable variant of this construction uses this version of
+templates, that also shifts the core:</p>
+<p><em>image should be here</em></p>
+<p>==TODO write this part==</p>
+<p>Can be modified or simplified:</p>
+<ul>
+<li>Can be extended to n-state or higher dimensions trivially.</li>
+<li>Does not work well for vN as far as I can tell as two interacting
+cells see only each other, but maybe if you allow operating on
+substates. Naively albeit you would get analog of CA#2 with one n-state
+slot.</li>
+<li>The fact that it can’t express some of the rules compiled from
+substates, means it’s not a general way to express MC rules on n
+states.</li>
+</ul>
+<h3 id="ca4-2-pool-sand-pile">CA#4 “2-pool sand pile”</h3>
+<p><em>gif example should be here</em></p>
+<p>The goal for this one was to make a MC CA with actual isotropy while
+still displaying interesting behaviors.</p>
+<blockquote>
+<p>Cell has input pool and output pool, each can contain 0..4 mass. So,
+25 states in total.</p>
+<p>If INP = 0 then in next generation add 1 to it for each neighbor with
+OUT = 4.</p>
+<p>If OUT = 4 then in next generation subtract 1 from it for each
+neighbor with INP = 0.</p>
+<p>If INP != 0 and OUT != 4 then transition to any other state with the
+same mass based on the whole vN neighborhood.</p>
+</blockquote>
+<p><em>link to JS page sim should be here</em></p>
+<p>Major problem here is that it’s impossible to evacuate 1 mass cells
+on the border of any pattern. You would need to fill the cell on
+boundary with vacuum to 4 and then it would dispense mass in all
+directions again, creating at least one 1 mass cell. Even if you
+prohibit the vacuum to take mass from some additional type of cell
+(e.g. add tail / head flag), the cells on the border will stay with the
+remainder, 1 mass, with no way to take it out.</p>
+<p>So, there can be no ships, as they would bleed the mass on tail and
+sides.</p>
+<p>There can be oscillators that move the mass, if you surround them
+with e.g. (1,1) cells, which deny incoming mass transfers and can be set
+to be stable. And the cells on the inside repeatedly exchange mass.
+(pointed out by Fable)</p>
+<p>Unclear how to modify this to make it so that ships are possible, but
+strict MC and isotropy are preserved.</p>
+<p>Can be modified or simplified:</p>
+<ul>
+<li>Can be reduced in state number by sacrificing behavior complexity,
+for example by saying that mass in INP should be transferred to OUT as
+much as possible. Gives 9 states.</li>
+<li>Cells after streaming can also transition to any other cell with the
+same mass based on (pre stream) full neighborhood.</li>
+<li>More mass in pools, more pools, etc.</li>
+</ul>
+<h3 id="ca5-relaxed-mc-6-state">CA#5 “relaxed-MC 6 state”</h3>
+<p><em>gif example should be here</em></p>
+<p>The goal for this one was to make a MC CA with actual isotropy while
+still displaying interesting behaviors. Succeeded on interesting
+behaviors and isotropy, but failed on strict MC.</p>
+<blockquote>
+<p>Cells have phase state (0,1,2) and mass state (0,1) so 6 total.
+Written as (phase, mass). Range 1 vN neighborhood.</p>
+<p>PRIORITY: if mass = 0, any phase, but no neighbors with mass =1, THEN
+transition to (0,0)</p>
+<p>If self phase is 0 and mass = m, THEN transition to any of {(0,m),
+(1,m)} based on vN</p>
+<p>if self phase is 1 and mass = m, THEN transition to (2,m) if only one
+neighbor has phase 1, otherwise to (0,m) or (1,m) based on vN</p>
+<p>if self phase is 2 and mass = m, THEN copy the mass state of phase 2
+cell nearby if there is only 1 of them, m -&gt; new_m, THEN transition
+(0,new_m) or (1,new_m) based on vN</p>
+<p>Set rules to have permutation symmetry. i.e. if 0 - 0,1,2,0 - 1 is a
+rule, then all permutation of neighborhood are assigned the same outcome
+e.g. 0 - 1,2,0,0 - 1.</p>
+</blockquote>
+<p><em>link to JS page sim should be here</em></p>
+<p>To summarize, this family implements asynchronous proposal -
+acceptance coordination. Phase-1 transitions to Phase-2 only if it has 1
+Phase-1 neighbor. Two phase-2 cells near each other swap their states.
+Phase structure makes it so that phase-2 cells can only have 1 phase-2
+neighbor.</p>
+<p>This is as close to strict-MC as it gets, while being relaxed-MC. Has
+non vacuum massless states, but necessarily bounded number of them
+relative to massed states.</p>
+<p>Mass duplication or vanishing are completely forbidden after the
+first generation. But you can artificially make arrangements of cells
+(e.g. cross with (2,1) cell in center and 4 (2,0) cells nearby) that
+increase the mass going from gen-0 to gen-1, by bypassing the signaling
+and directly creating cells ready for exchange where it couldn’t arise
+naturally.</p>
+<p>Has common ships and oscillators and is generally very nice rule
+family, somewhat visually similar to CGOL.</p>
+<p>Can be modified or simplified:</p>
+<ul>
+<li>More phases – would not fix artificially made mass violating
+pattern</li>
+<li>Less phases – unclear how this would work, and if it works be
+probably degenerate</li>
+<li>More mass, fancier exchange rules, etc.</li>
+</ul>
+<h3 id="ca6-the-snakes">CA#6 “the snakes”</h3>
+<p><em>gif example should be here</em></p>
+<p>The goal of this one was to make patterns similar to that game where
+snake eats apples and grows. Simultaneous update, local and mass
+conserving CA version of it.</p>
+<blockquote>
+<p>Each cell has arrow state, and mover state, and “remove” flag.</p>
+<p>Arrow has a FROM and TO, one of the 4 sides, it can’t be the same
+side. Total 12 arrows.</p>
+<p><em>image should be here</em></p>
+<p>Mover can be either none, forward or backwards or both.</p>
+<p>Arrow has 1 mass (or 0 if remove = 1), forward mover 1 mass,
+backwards mover 0 mass. overflow2, overflow3, overflow4 have 2,3,4 mass
+respectively.</p>
+<p>12 x 2 x 2 x 2 = 96 states, plus vacuum, overflow2, overflow3,
+overflow4, total 100.</p>
+<p>“backwards connecting” cell means, there is a cell on your FROM edge
+that points at you with its TO “forward connecting” cell means, there a
+is cell on your TO edge that points at you with its FROM</p>
+<p><strong>Streaming:</strong></p>
+<ul>
+<li><p>If cell has no forward mover, backwards connecting cell has one,
+THEN gain forward mover.</p></li>
+<li><p>If cell has no backwards mover, forward connecting cell has one,
+THEN gain backwards mover.<br />
+</p></li>
+<li><p>If cell has forward mover, forward connecting cell has no such
+mover and remove = 0, THEN lose forward mover.</p></li>
+<li><p>If cell has backwards mover, backwards connecting cell has no
+such mover, THEN lose backwards mover. <strong>Dealing with the ends of
+the chain:</strong></p></li>
+<li><p>If cell has forward connection, but no backwards connection, and
+backwards mover, THEN set remove flag = 1, lose backwards mover, gain
+forward mover.</p></li>
+<li><p>If cell has remove flag = 1 and no forward mover, THEN transition
+to vacuum.</p></li>
+<li><p>If cell has forward mover and vacuum is forward, THEN lose
+forward mover.</p></li>
+<li><p>If vacuum has 1 arrow pointing at it with forward mover, THEN
+transition to some arrow with backwards connection to that arrow and
+backwards mover (free parameter here)</p></li>
+<li><p>If vacuum has 2 or more arrows pointing at it with forward
+movers, THEN transition to corresponding overflow state.</p></li>
+</ul>
+</blockquote>
+<p><em>link to JS page sim should be here</em></p>
+<p>This is rather long and complicated spec, but the basic idea is that
+there are 12 arrows with source and sink, each body cell has one. They
+pipe extra mass from tail to head and signal to disassemble the tail
+from head to tail. So, it crawls kinda by rolling (“caterpillar track”),
+taking tail cell and carrying it to the head over the body.</p>
+<p>Can be modified or simplified: - Right now overflow are
+indestructible, but they can be extended to track from where the inflow
+came and put there a mass chunk if it’s free, so they can dissolve. #
+Questions without answers</p>
+<h3 id="q1">Q1</h3>
+<p>What’s the smallest state number of a CA that is all of the
+following:</p>
+<ul>
+<li>Strictly mass conserving.</li>
+<li>Range 1 vN or Moore.</li>
+<li>Fully isotropic.</li>
+<li>Has ships of non zero total mass (on vacuum background)</li>
+</ul>
+<p>Or whether any such CA exists.</p>
+<h3 id="q2">Q2</h3>
+<p>Can there be generalized partitioned state + template formulation,
+that constrains state of the cell in the next generation without
+explicit factoring it into parts?</p>
+<h3 id="q3">Q3</h3>
+<p>Is there isotropic rule family, MC of the “A cell is considered to
+have one mass chunk if it has at least one neighbor of B state” type,
+which exhibits interesting behaviors such as ships of non zero mass?</p>
+<h3 id="q4">Q4</h3>
+<p>You can make gas simulation MC CA. How do you construct soft body
+simulation MC CA?</p>
+<h3 id="q5">Q5</h3>
+<p>What’s the condition for two-pool rules (or their close
+modifications) to be reversible?</p>
+<h3 id="q6">Q6</h3>
+<p>You can extend a rule with additional state, call it sink as {normal
+state set} x {sink yes / no} such that sink cell is not obstructing
+normal CA activity. Sink tag is unmodifiable, so a cell with that tag
+stays with it and no cell can acquire it.</p>
+<p>Is there a rule such that:</p>
+<ul>
+<li>It’s mass conserving, and has no massless non-vacuum states.</li>
+<li>All non-vacuum patterns stay connected under application of
+generations, under some hop distance. E.g. a square can gradually
+transition into a line, but not into two smaller disconnected
+squares.</li>
+<li>Can be extended with a sink state set, such that if one non-vacuum
+cell is marked with a sink in the pattern, then the whole pattern dies
+out. You can modify only the transitions that contain sink cells.</li>
+</ul>
+<hr />
+<p>Comments, thoughts?</p>
+</body>
+</html>
